@@ -68,11 +68,16 @@ pygame.display.update()
 clock = pygame.time.Clock()
 FINISHED = False
 score = 0
+TICKS = 100
+
 
 circle_cords = create_balls(12)
 
-
+tick = TICKS
 while not FINISHED:
+    if tick == TICKS:
+        circle_cords = create_balls(12)
+        tick = 0
     clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -86,5 +91,7 @@ while not FINISHED:
     circle_cords = create_balls_with_moving(circle_cords)
     pygame.display.update()
     screen.fill(BLACK)
+    tick += 1
+
 
 pygame.quit()
