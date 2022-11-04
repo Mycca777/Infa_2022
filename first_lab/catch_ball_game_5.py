@@ -127,4 +127,5 @@ while not FINISHED:
 
 write_score_to_csv_file(USER_NAME, score)
 
+
 pygame.quit()
