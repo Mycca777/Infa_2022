@@ -6,6 +6,7 @@ import pygame
 
 FPS = 30
 
+
 RED = 0xFF0000
 BLUE = 0x0000FF
 YELLOW = 0xFFC91F
@@ -55,6 +56,7 @@ class Ball:
         self.y -= self.vy
 
     def draw(self):
+        """Рисуем шарик"""
         pygame.draw.circle(
             self.screen,
             self.color,
@@ -78,6 +80,16 @@ class Ball:
 
 class Gun:
     def __init__(self, screen):
+        """Этот класс отвечает за орудие
+        screen : объект, задающий поле
+        Args:
+        
+       x - координата орудия по горизонтали слева направо
+       y - координата орудия по вертикали сверху вниз
+       vx - добавка ("скорость") орудия по горизонтали
+       vy - добавка ("скорость") орудия по вертикали
+       targ - насколько сильно заряжено орудие, чтобы отрисовать это на экране
+        """
         self.screen = screen
         self.f2_power = 10
         self.f2_on = 0
@@ -136,7 +148,9 @@ class Gun:
             self.color = GREY
 
     def move(self, event_type):
-        # print(event_type)
+        """Движение орудия
+        event_type - какая клавиша нажата
+        """
         if event_type == 'up':
             self.y -= self.vy
         elif event_type == 'down':
@@ -149,16 +163,32 @@ class Gun:
 
 class Target:
     def new_target(self, screen, type_of_target):
-        """ Инициализация новой цели. """
+        """ Инициализация новой цели.
+        Args:
+        x - координата по горизонтали
+        y - координата по вертикали
+        r - радиус мишени
+        vx - скорость мишени по х
+        vy- скорость мишени по y
+        live - жизнь мишени
+        points - очки
+        """
         self.points = 0
         self.live = 1
         x = self.x = randint(600, 780)
         y = self.y = randint(300, 550)
         if type_of_target == 1:
+            '''
+            Первый тип мишени - маленький радиус, одна жизнь, маленькая скорость
+            '''
             r = self.r = randint(5, 10)
             self.vx = randint(-5, 5)
             self.vy = randint(-5, 5)
         elif type_of_target == 2:
+            '''
+            Второй тип мишени - большой радиус, 3 жизни, большая скорость
+            '''
+            self.live = 3
             r = self.r = randint(30, 40)
             self.vx = randint(15, 20)
             self.vy = randint(15, 20)
@@ -166,6 +196,7 @@ class Target:
         self.screen = screen
 
     def draw(self):
+        """Рисую мишень"""
         pygame.draw.circle(
             self.screen,
             self.color,
@@ -175,7 +206,7 @@ class Target:
         self.move()
     
     def draw_score(self, points):
-        # рисуем очки
+        """Рисую очки"""
         pygame.draw.circle(self.screen, WHITE, [50, 25], 25)
         pygame.font.init()
         my_font = pygame.font.SysFont('Comic Sans MS', 30)
@@ -184,6 +215,9 @@ class Target:
         self.screen.blit(text_surface, (50,0))
 
     def move(self):
+        '''
+        Движение с отскоком от всех стен
+        '''
         if self.x + self.r >= 800 or self.x - self.r <= 0:
             self.vx *= -1
         if self.y + self.r >= 600 or self.y - self.r <= 0:
