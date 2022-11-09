@@ -84,6 +84,10 @@ class Gun:
         self.an = 1
         self.targ = 0
         self.color = GREY
+        self.vx = 5
+        self.vy = 5
+        self.x = 20
+        self.y = 450
 
     def fire2_start(self, event):
         self.f2_on = 1
@@ -106,6 +110,7 @@ class Gun:
         self.f2_power = 10
         self.targ = 0
 
+
     def targetting(self, event):
         """Прицеливание. Зависит от положения мыши."""
         if event:
@@ -116,7 +121,10 @@ class Gun:
             self.color = GREY
 
     def draw(self):
-        pygame.draw.line(screen, self.color, (20, 450), (20 + (20+self.targ)*math.cos(self.an), 450 + (20+self.targ)*math.sin(self.an)), 5)
+        tank_surf = pygame.image.load('tank.jpg')
+        tank_surf.set_colorkey((255, 255, 255))
+        self.screen.blit(tank_surf, (self.x - 15, self.y - 20))
+        pygame.draw.line(screen, self.color, (self.x, self.y), (self.x + (20+self.targ)*math.cos(self.an), self.y + (20+self.targ)*math.sin(self.an)), 5)
 
     def power_up(self):
         if self.f2_on:
@@ -126,6 +134,17 @@ class Gun:
             self.color = RED
         else:
             self.color = GREY
+
+    def move(self, event_type):
+        # print(event_type)
+        if event_type == 'up':
+            self.y -= self.vy
+        elif event_type == 'down':
+            self.y += self.vy
+        elif event_type == 'right':
+            self.x += self.vx
+        elif event_type == 'left':
+            self.x -= self.vx
 
 
 class Target:
@@ -210,6 +229,20 @@ while not finished:
             gun.fire2_end(event)
         elif event.type == pygame.MOUSEMOTION:
             gun.targetting(event)
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                # print(123123123)
+                gun.move('up')
+                gun.draw()
+            elif event.key == pygame.K_DOWN:
+                gun.move('down')
+                gun.draw()
+            elif event.key == pygame.K_RIGHT:
+                gun.move('right')
+                gun.draw()
+            elif event.key == pygame.K_LEFT:
+                gun.move('left')
+                gun.draw()
 
     for b in balls:
         if abs(b.vx) >= 0.1:
