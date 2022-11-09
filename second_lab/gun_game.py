@@ -179,16 +179,15 @@ class Target:
         y = self.y = randint(300, 550)
         if type_of_target == 1:
             '''
-            Первый тип мишени - маленький радиус, одна жизнь, маленькая скорость
+            Первый тип мишени - маленький радиус, маленькая скорость
             '''
             r = self.r = randint(5, 10)
             self.vx = randint(-5, 5)
             self.vy = randint(-5, 5)
         elif type_of_target == 2:
             '''
-            Второй тип мишени - большой радиус, 3 жизни, большая скорость
+            Второй тип мишени - большой радиус, большая скорость
             '''
-            self.live = 3
             r = self.r = randint(30, 40)
             self.vx = randint(15, 20)
             self.vy = randint(15, 20)
